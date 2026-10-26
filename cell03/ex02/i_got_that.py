@@ -2,5 +2,6 @@
 
 response = input("What you gotta say? : ")
 
-while (response != "STOP"):
+while (True):
 	response = input("I got that! Anything else? : ")
+	if (response == "STOP"): break
