@@ -2,6 +2,7 @@
 
 import sys
 
-params_num = len(sys.argv) - 1
+params = sys.argv[1:]
+params_num = len(params)
 
 print(f'Number of parameters: {params_num}.')
