@@ -13,11 +13,12 @@ header = [
 ]
 
 menu = {
-    1: "Chat with our Large Language Model",
+    1: "Add Record",
     2: "View Records",
     3: "Update Record",
     4: "Search and Summary",
-    5: "Exit"
+    5: "Using LLM",
+    6: "Exit"
 }
 
 def render(param):
@@ -30,6 +31,18 @@ def render(param):
                 print(f'{key}. {value}')
 
 def menu1():
+    print('menu 1')
+
+def menu2():
+    print('menu 2')
+
+def menu3():
+    print('menu 3')
+
+def menu4():
+    print('menu 4')
+
+def menu5():
     while True:
         prompt = input("You: ")
 
@@ -54,16 +67,7 @@ def menu1():
 
         print("AI:", completion.choices[0].message.content)
 
-def menu2():
-    print('menu 2')
-
-def menu3():
-    print('menu 3')
-
-def menu4():
-    print('menu 4')
-
-def menu5():
+def menu6():
     print('Goodbye!')
     exit()
 
@@ -82,5 +86,6 @@ def main():
             case "3": menu3()
             case "4": menu4()
             case "5": menu5()
+            case "6": menu6()
 
 main()
