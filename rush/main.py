@@ -13,13 +13,15 @@ header = [
 ]
 
 menu = {
-    1: "Add Record",
-    2: "View Records",
-    3: "Update Record",
-    4: "Search and Summary",
+    1: "Add new task",
+    2: "View all tasks",
+    3: "Update task",
+    4: "Remove task",
     5: "Using LLM",
     6: "Exit"
 }
+
+task_planning = {}
 
 def render(param):
     match param:
@@ -72,14 +74,12 @@ def menu6():
     exit()
 
 def main():
-    render(header)
-    render(menu)
-
     prompt = ""
 
     while True:
-        prompt = input("Choose: ")
-
+        render(header)
+        render(menu)
+        prompt = input("Select a menu: ")
         match prompt:
             case "1": menu1()
             case "2": menu2()
