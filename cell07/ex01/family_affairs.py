@@ -2,12 +2,15 @@
 
 def find_the_redheads(family):
     redheads = filter(isRedhead, family.items())
+
     redheads = dict(redheads)
     redheads = list(redheads)
+
     return redheads
 
 def isRedhead(family):
     hair_color = family[1]
+
     if hair_color == "red":
         return True
     else:
