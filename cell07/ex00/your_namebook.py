@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 
-persons = {
-    "jean": "valjean",
-    "grace": "hopper",
-    "xavier": "niel",
-    "fifi": "brindacier"
-}
-
 def array_of_names(persons):
     array = []
 
@@ -15,5 +8,12 @@ def array_of_names(persons):
         array.append(fullname)
 
     return(array)
+
+persons = {
+    "jean": "valjean",
+    "grace": "hopper",
+    "xavier": "niel",
+    "fifi": "brindacier"
+}
 
 print(array_of_names(persons))
