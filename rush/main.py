@@ -196,7 +196,7 @@ def llm(records):
     while True:
         user_prompt = input('You (/cancel to return): ').strip()
 
-        if isCancel(user_prompt):
+        if cancel(user_prompt):
             break
 
         if not user_prompt:
