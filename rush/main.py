@@ -32,8 +32,9 @@ def show_books(books):
 
 
 def get_status():
+    print('\nStatus:')
     show_menu(STATUSES)
-    choice = input('Select status (1-3) (/cancel to return): ').strip()
+    choice = input('\nSelect status (1-3) (/cancel to return): ').strip()
 
     if cancel(choice):
         return None
@@ -45,7 +46,7 @@ def get_status():
 
 
 def get_book(books, action):
-    choice = input(f'Book number to {action} (/cancel to return): ').strip()
+    choice = input(f'\nBook number to {action} (/cancel to return): ').strip()
 
     if cancel(choice):
         return None
@@ -215,6 +216,8 @@ def llm(records):
 
 def exit_program():
     goodbye_art = [
+        r"",
+        r"",
         r"     ██████╗  ██████╗  ██████╗ ██████╗",
         r"    ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗",
         r"    ██║  ███╗██║   ██║██║   ██║██║  ██║",
@@ -222,7 +225,9 @@ def exit_program():
         r"    ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝",
         r"     ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝",
         r"           THANKS FOR READING!",
-        r"            SEE YOU NEXT TIME!"
+        r"            SEE YOU NEXT TIME!",
+        r"",
+        r""
     ]
 
     for line in goodbye_art:
@@ -235,13 +240,13 @@ def main():
     header_art = [
         r"╔══════════════════════════════════════════╗",
         r"║                                          ║",
-        r"║    ██████╗ ███████╗ █████╗ ██████╗       ║",
-        r"║    ██╔══██╗██╔════╝██╔══██╗██╔══██╗      ║",
-        r"║    ██████╔╝█████╗  ███████║██║  ██║      ║",
-        r"║    ██╔══██║██╔══╝  ██╔══██║██║  ██║      ║",
-        r"║    ██║  ██║███████╗██║  ██║██████╔╝      ║",
-        r"║    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝       ║",
-        r"║          R E A D I N G   T R A C K E R   ║",
+        r"║     ██████╗ ███████╗ █████╗ ██████╗      ║",
+        r"║     ██╔══██╗██╔════╝██╔══██╗██╔══██╗     ║",
+        r"║     ██████╔╝█████╗  ███████║██║  ██║     ║",
+        r"║     ██╔══██║██╔══╝  ██╔══██║██║  ██║     ║",
+        r"║     ██║  ██║███████╗██║  ██║██████╔╝     ║",
+        r"║     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝      ║",
+        r"║      R E A D I N G   T R A C K E R       ║",
         r"║                                          ║",
         r"╚══════════════════════════════════════════╝"
     ]
