@@ -76,7 +76,9 @@ def add(books):
             print('Please select a valid reading status.')
         else:
             books[title] = status
-            print('Book added.')
+            print('\nBook added successfully!')
+            print(f'Book title: {title}')
+            print(f'Reading status: {status}')
 
     pause()
 
