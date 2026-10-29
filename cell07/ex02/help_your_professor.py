@@ -20,5 +20,5 @@ class_3C = {
     "stephanie": 13
 }
 
-print(f'{average(class_3B)}')
-print(f'{average(class_3C)}')
+print(f"Average for class 3B: {average(class_3B)}.")
+print(f"Average for class 3C: {average(class_3C)}.")
