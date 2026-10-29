@@ -5,7 +5,7 @@ def add_one(number):
     return number
 
 number = 10
-added_number = add_one(number)
 
 print(number)
-print(added_number)
+add_one(number)
+print(number)
