@@ -4,7 +4,7 @@ def famous_births(women_scientists):
     sorted_women_scientists = dict(
         sorted(
             women_scientists.items(),
-            key=lambda item: item[1]["date_of_birth"]
+            key=lambda item: int(item[1]["date_of_birth"])
         )
     )
 
@@ -13,7 +13,7 @@ def famous_births(women_scientists):
 
         scientist_name = scientist["name"]
         scientist_dob = scientist["date_of_birth"]
-        
+
         print(f'{scientist_name} is a great scientist born in {scientist_dob}.')
 
 
