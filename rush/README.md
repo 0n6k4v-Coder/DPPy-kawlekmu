@@ -73,14 +73,3 @@ Goodbye!
 
 This output is an illustration only. Your team must create its own menu, domain logic, and working
 implementation.
-
-Design:
-```
-Menu:
-1. Add
-2. View
-3. Update
-4. Remove
-5. Chat with AI
-6. Exit
-```

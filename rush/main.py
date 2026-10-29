@@ -6,127 +6,184 @@ from openai import OpenAI
 
 load_dotenv()
 
-
-def render(content):
-    match content:
-        case list():
-            for line in content:
-                print(line)
-        case dict():
-            for name, status in content.items():
-                print(f'{name}: {status}')
-        case str():
-            print(f'\n============ {content} ===========\n')
+STATUSES = {
+    '1': 'Planned',
+    '2': 'Reading',
+    '3': 'Finished'
+}
 
 
-def get_input(message):
-    user_input = input(f'{message} (/cancel to return): ').strip()
+def pause():
+    input('\nPress Enter to return to the menu...')
 
-    if user_input == '/cancel':
+
+def cancel(value):
+    return value == '/cancel'
+
+
+def show_menu(menu):
+    for number, name in menu.items():
+        print(f'{number}: {name}')
+
+
+def show_books(books):
+    for number, (title, status) in enumerate(books.items(), 1):
+        print(f'{number}. {title}: {status}')
+
+
+def get_status():
+    show_menu(STATUSES)
+    choice = input('Select status (1-3) (/cancel to return): ').strip()
+
+    if cancel(choice):
         return None
-
-    return user_input
-
-
-def add(records):
-    render('1. Add new task')
-
-    task_name = get_input('Task name')
-    if task_name is None:
-        return
-
-    task_status = get_input('Task status')
-    if task_status is None:
-        return
-
-    if not task_name:
-        print('Task name cannot be empty.')
-    elif task_name in records:
-        print('Task already exists.')
-    elif not task_status:
-        print('Task status cannot be empty.')
+    elif choice in STATUSES:
+        return STATUSES[choice]
     else:
-        records[task_name] = task_status
-        print('Task added.')
+        print('Invalid status choice.')
+        return ''
 
 
-def view(records):
-    render('2. View all tasks')
+def get_book(books, action):
+    choice = input(f'Book number to {action} (/cancel to return): ').strip()
 
-    if not records:
-        print('No tasks found.')
+    if cancel(choice):
+        return None
+    elif choice.isdigit() and 1 <= int(choice) <= len(books):
+        return list(books)[int(choice) - 1]
     else:
-        render(records)
+        print('Invalid book number.')
+        return ''
 
 
-def update(records):
-    render('3. Update task')
+def add(books):
+    print('\n============ 1. Add new book ============\n')
 
-    task_name = get_input('Task name')
-    if task_name is None:
+    title = input('Book title (/cancel to return): ').strip()
+
+    if cancel(title):
         return
-
-    if task_name not in records:
-        print('Task not found.')
+    elif not title:
+        print('Book title cannot be empty.')
+    elif title in books:
+        print('Book already exists.')
     else:
-        task_status = get_input('New status')
-        if task_status is None:
+        status = get_status()
+
+        if status is None:
             return
-
-        if task_status:
-            records[task_name] = task_status
-            print('Task updated.')
+        elif not status:
+            print('Please select a valid reading status.')
         else:
-            print('Status cannot be empty.')
+            books[title] = status
+            print('Book added.')
+
+    pause()
 
 
-def remove(records):
-    render('4. Remove task')
+def view(books):
+    print('\n============ 2. View all books ============\n')
 
-    task_name = get_input('Task name')
-    if task_name is None:
-        return
-
-    if task_name in records:
-        records.pop(task_name)
-        print('Task removed.')
+    if not books:
+        print('No books found.')
     else:
-        print('Task not found.')
+        show_books(books)
+
+    pause()
 
 
-def search(records):
-    render('5. Search tasks')
+def update(books):
+    print('\n============ 3. Update reading status ============\n')
 
-    keyword = get_input('Search task')
-    if keyword is None:
+    if not books:
+        print('No books found.')
+        pause()
         return
 
-    keyword = keyword.lower()
-    found_task = False
+    show_books(books)
+    title = get_book(books, 'update')
 
-    for task_name, task_status in records.items():
-        if keyword and keyword in task_name.lower():
-            print(f'{task_name}: {task_status}')
-            found_task = True
+    if title is None:
+        return
+    elif not title:
+        pause()
+        return
 
-    if not found_task:
-        print('No matching tasks found.')
+    status = get_status()
+
+    if status is None:
+        return
+    elif not status:
+        print('Please select a valid reading status.')
+    else:
+        books[title] = status
+        print('Reading status updated.')
+
+    pause()
 
 
-def summary(records):
-    render('6. Summarize tasks')
+def remove(books):
+    print('\n============ 4. Remove book ============\n')
 
-    print(f'Total tasks: {len(records)}')
+    if not books:
+        print('No books found.')
+        pause()
+        return
 
-    for task_status in set(records.values()):
-        print(
-            f'{task_status}: '
-            f'{list(records.values()).count(task_status)}'
-        )
+    show_books(books)
+    title = get_book(books, 'remove')
+
+    if title is None:
+        return
+    elif not title:
+        pause()
+        return
+
+    del books[title]
+    print('Book removed.')
+    pause()
+
+
+def search(books):
+    print('\n============ 5. Search books ============\n')
+
+    keyword = input('Search book (/cancel to return): ').strip()
+
+    if cancel(keyword):
+        return
+
+    found = False
+
+    for number, (title, status) in enumerate(books.items(), 1):
+        if keyword and keyword.lower() in title.lower():
+            print(f'{number}. {title}: {status}')
+            found = True
+
+    if not found:
+        print('No matching books found.')
+
+    pause()
+
+
+def summary(books):
+    print('\n============ 6. Reading progress ============\n')
+
+    print(f'Total books: {len(books)}')
+
+    for status in STATUSES.values():
+        count = 0
+
+        for book_status in books.values():
+            if book_status == status:
+                count += 1
+
+        print(f'{status}: {count}')
+
+    pause()
 
 
 def llm(records):
-    render('7. Summarize by LLM')
+    print('\n============ 7. Reading summary by LLM ===========\n')
 
     client = OpenAI(
         base_url='https://integrate.api.nvidia.com/v1',
@@ -134,9 +191,9 @@ def llm(records):
     )
 
     while True:
-        user_prompt = get_input('You')
+        user_prompt = input('You (/cancel to return): ').strip()
 
-        if user_prompt is None:
+        if isCancel(user_prompt):
             break
 
         if not user_prompt:
@@ -146,7 +203,7 @@ def llm(records):
         response = client.responses.create(
             model='nvidia/nemotron-3.5-super-vl-120b-a12b',
             input=(
-                f'Use only these task records: {records}\n'
+                f'Use only these reading records: {records}\n'
                 f'User prompt: {user_prompt}'
             )
         )
@@ -156,74 +213,71 @@ def llm(records):
 
 def exit_program():
     goodbye_art = [
-        r"                                            ",
-        r"                                            ",
-        r"     ██████╗  ██████╗  ██████╗ ██████╗      ",
-        r"    ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗     ",
-        r"    ██║  ███╗██║   ██║██║   ██║██║  ██║     ",
-        r"    ██║   ██║██║   ██║██║   ██║██║  ██║     ",
-        r"    ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝     ",
-        r"     ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝      ",
-        r"                                            ",
-        r"           THANKS FOR PLAYING!              ",
-        r"            SEE YOU NEXT TIME!              ",
-        r"                                            ",
-        r"                                            "
+        r"     ██████╗  ██████╗  ██████╗ ██████╗",
+        r"    ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗",
+        r"    ██║  ███╗██║   ██║██║   ██║██║  ██║",
+        r"    ██║   ██║██║   ██║██║   ██║██║  ██║",
+        r"    ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝",
+        r"     ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝",
+        r"           THANKS FOR READING!",
+        r"            SEE YOU NEXT TIME!"
     ]
 
-    render(goodbye_art)
+    for line in goodbye_art:
+        print(line)
 
 
 def main():
-    records = {}
+    books = {}
 
     header_art = [
         r"╔══════════════════════════════════════════╗",
         r"║                                          ║",
-        r"║    ██████╗ ██╗   ██╗███████╗██╗  ██╗     ║",
-        r"║    ██╔══██╗██║   ██║██╔════╝██║  ██║     ║",
-        r"║    ██████╔╝██║   ██║███████╗███████║     ║",
-        r"║    ██╔══██║██║   ██║╚════██║██╔══██║     ║",
-        r"║    ██║  ██║╚██████╔╝███████║██║  ██║     ║",
-        r"║    ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ║",
-        r"║            R U S H   H O U R             ║",
+        r"║    ██████╗ ███████╗ █████╗ ██████╗       ║",
+        r"║    ██╔══██╗██╔════╝██╔══██╗██╔══██╗      ║",
+        r"║    ██████╔╝█████╗  ███████║██║  ██║      ║",
+        r"║    ██╔══██║██╔══╝  ██╔══██║██║  ██║      ║",
+        r"║    ██║  ██║███████╗██║  ██║██████╔╝      ║",
+        r"║    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝       ║",
+        r"║          R E A D I N G   T R A C K E R   ║",
         r"║                                          ║",
         r"╚══════════════════════════════════════════╝"
     ]
 
-    menu_items = {
-        '1': 'Add new task',
-        '2': 'View all tasks',
-        '3': 'Update task',
-        '4': 'Remove task',
-        '5': 'Search tasks',
-        '6': 'Summarize tasks',
-        '7': 'Summarize by LLM',
+    menu = {
+        '1': 'Add new book',
+        '2': 'View all books',
+        '3': 'Update reading status',
+        '4': 'Remove book',
+        '5': 'Search books',
+        '6': 'Summarize reading progress',
+        '7': 'Reading summary by LLM',
         '8': 'Exit'
     }
 
-    render(header_art)
+    for line in header_art:
+        print(line)
 
     while True:
-        render('MENU')
-        render(menu_items)
+        print('\n============ MENU ============\n')
+        show_menu(menu)
 
         choice = input('\nSelect a menu: ').strip()
 
         if choice == '1':
-            add(records)
+            add(books)
         elif choice == '2':
-            view(records)
+            view(books)
         elif choice == '3':
-            update(records)
+            update(books)
         elif choice == '4':
-            remove(records)
+            remove(books)
         elif choice == '5':
-            search(records)
+            search(books)
         elif choice == '6':
-            summary(records)
+            summary(books)
         elif choice == '7':
-            llm(records)
+            llm(books)
         elif choice == '8':
             exit_program()
             break
