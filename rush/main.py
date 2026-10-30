@@ -188,10 +188,16 @@ def summary(books):
 def llm(records):
     print('\n============ 7. Reading summary by LLM ===========\n')
 
-    client = OpenAI(
-        base_url='https://integrate.api.nvidia.com/v1',
-        api_key=os.getenv('NVIDIA_API_KEY')
-    )
+    api_key = os.getenv('NVIDIA_API_KEY')
+
+    if not api_key:
+        print('Error: NVIDIA_API_KEY not found. Please check your .env file.')
+        return
+    else:
+        client = OpenAI(
+            base_url='https://integrate.api.nvidia.com/v1',
+            api_key=api_key
+        )
 
     while True:
         user_prompt = input('You (/cancel to return): ').strip()
