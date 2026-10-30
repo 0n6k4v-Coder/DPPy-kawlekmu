@@ -271,31 +271,34 @@ def main():
     for line in header_art:
         print(line)
 
-    while True:
-        print('\n============ MENU ============\n')
-        show_menu(menu)
+    try:
+        while True:
+            print('\n============ MENU ============\n')
+            show_menu(menu)
 
-        choice = input('\nSelect a menu: ').strip()
+            choice = input('\nSelect a menu: ').strip()
 
-        if choice == '1':
-            add(books)
-        elif choice == '2':
-            view(books)
-        elif choice == '3':
-            update(books)
-        elif choice == '4':
-            remove(books)
-        elif choice == '5':
-            search(books)
-        elif choice == '6':
-            summary(books)
-        elif choice == '7':
-            llm(books)
-        elif choice == '8':
-            exit_program()
-            break
-        else:
-            print('Invalid menu choice.')
+            if choice == '1':
+                add(books)
+            elif choice == '2':
+                view(books)
+            elif choice == '3':
+                update(books)
+            elif choice == '4':
+                remove(books)
+            elif choice == '5':
+                search(books)
+            elif choice == '6':
+                summary(books)
+            elif choice == '7':
+                llm(books)
+            elif choice == '8':
+                exit_program()
+                break
+            else:
+                print('Invalid menu choice.')
+    except KeyboardInterrupt:
+        exit_program()
 
 
 if __name__ == '__main__':
