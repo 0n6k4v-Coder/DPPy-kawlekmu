@@ -297,7 +297,7 @@ def main():
                 break
             else:
                 print('Invalid menu choice.')
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         exit_program()
 
 
