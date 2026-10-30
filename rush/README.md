@@ -6,8 +6,6 @@
 
 <p>
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/NVIDIA%20NVIDIA%20API-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA API">
-  <img src="https://img.shields.io/badge/LLM-Powered-blueviolet?style=for-the-badge" alt="LLM Powered">
 </p>
 
 </div>
